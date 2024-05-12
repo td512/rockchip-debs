@@ -36,7 +36,7 @@ jobs:
             for subdirectory in *; do
                 pushd $subdirectory
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-source -x *.dsc
-                cd *
+                find . -type d -maxdepth 1 -exec cd {} \;
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-buildpackage
                 popd
             done

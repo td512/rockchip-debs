@@ -19,6 +19,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Checkout Private LFS Repo
+        run: git clone https://git.theom.nz/td512/debian-packages
+
       - name: Checkout Git LFS
         run: sudo apt-get update && sudo apt-get install -y git-lfs && git lfs fetch && git lfs checkout
 
@@ -27,7 +30,7 @@ jobs:
 
       - name: Build Packages
         run: |
-          cd debian
+          cd debian-packages
           for directory in *; do 
             pushd $directory
             for subdirectory in *; do

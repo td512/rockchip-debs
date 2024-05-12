@@ -33,6 +33,8 @@ jobs:
             for subdirectory in *; do
                 pushd $subdirectory
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-source -x *.dsc
+                mkdir debian
+                touch debian/changelog
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-buildpackage
                 popd
             done

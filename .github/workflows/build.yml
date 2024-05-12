@@ -1,0 +1,49 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+run-name: Build Debian Packages
+
+jobs:
+  build:
+    strategy:
+        matrix:
+          suite:
+            - bookworm
+            - trixie
+    runs-on: runs-on,runner=32cpu-linux-arm64,image=ubuntu22-full-arm64,run-id=${{ github.run_id }}
+    name: Build OS Cache
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout Git LFS
+        run: sudo apt-get update && sudo apt-get install -y git-lfs && git lfs fetch && git lfs checkout
+
+      - name: Build Docker appliance
+        run: docker build -t build docker/${{ matrix.suite }}
+
+      - name: Build Packages
+        run: |
+          cd debian
+          for directory in *; do 
+            pushd $directory
+            for subdirectory in *; do
+                pushd $subdirectory
+                docker run --privileged --network=host --rm -it -v \"$(pwd)\":/opt build dpkg-buildpackage
+                popd
+            done
+            find . -name \*.deb -exec mv {} ../../debian-built/$directory/
+            popd
+          done
+        
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+            name: packages
+            path: ./debian-built/**/*.deb
+            if-no-files-found: error
+            overwrite: true
+            compression-level: 9

@@ -23,7 +23,7 @@ jobs:
         run: git clone https://git.theom.nz/td512/debian-packages
 
       - name: Checkout Git LFS
-        run: sudo apt-get update && sudo apt-get install -y git-lfs && git lfs fetch && git lfs checkout
+        run: sudo apt-get update && sudo apt-get install -y git-lfs && cd debian-packages && git lfs fetch && git lfs checkout
 
       - name: Build Docker appliance
         run: docker build -t build docker/${{ matrix.suite }}
@@ -36,8 +36,7 @@ jobs:
             for subdirectory in *; do
                 pushd $subdirectory
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-source -x *.dsc
-                mkdir debian
-                touch debian/changelog
+                docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-source -x *.dsc
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-buildpackage
                 popd
             done

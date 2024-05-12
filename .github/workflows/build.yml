@@ -12,8 +12,8 @@ jobs:
           suite:
             - bookworm
             - trixie
-    runs-on: runs-on,runner=32cpu-linux-arm64,image=ubuntu22-full-arm64,run-id=${{ github.run_id }}
-    name: Build OS Cache
+    runs-on: runs-on,runner=8cpu-linux-arm64,image=ubuntu22-full-arm64,run-id=${{ github.run_id }}
+    name: Build Packages
 
     steps:
       - name: Checkout code

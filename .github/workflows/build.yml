@@ -16,14 +16,14 @@ jobs:
     name: Build Packages
 
     steps:
+      - name: Checkout Git LFS
+        run: sudo apt-get update && sudo apt-get install -y git-lfs
+      
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Checkout Private LFS Repo
         run: git clone https://git.theom.nz/td512/debian-packages
-
-      - name: Checkout Git LFS
-        run: sudo apt-get update && sudo apt-get install -y git-lfs && cd debian-packages && git lfs fetch && git lfs checkout
 
       - name: Build Docker appliance
         run: docker build -t build docker/${{ matrix.suite }}

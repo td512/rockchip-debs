@@ -37,7 +37,8 @@ jobs:
                 pushd $subdirectory
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-source -x *.dsc
                 ls
-                ls debian
+                ls *
+                ls */*
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-buildpackage
                 popd
             done

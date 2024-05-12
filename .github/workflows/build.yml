@@ -30,6 +30,7 @@ jobs:
 
       - name: Build Packages
         run: |
+          ls
           cd debian-packages
           for directory in *; do 
             pushd $directory

@@ -32,15 +32,16 @@ jobs:
         run: |
           cd debian-packages
           for directory in *; do 
-            pushd $directory
+            pushd "${directory}"
             for subdirectory in *; do
-                pushd $subdirectory
+                pushd "${subdirectory}"
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-source -x *.dsc
-                find . -type d -maxdepth 1 -exec cd {} \;
+                cd "${subdirectory}*"
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-buildpackage
                 popd
             done
-            find . -name \*.deb -exec mv {} ../../debian-built/$directory/
+            mkdir -p "../../debian-built/${directory}/${subdirectory}"
+            find . -name \*.deb -exec mv {} "../../debian-built/${directory}/${subdirectory}"
             popd
           done
         

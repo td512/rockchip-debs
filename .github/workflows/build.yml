@@ -32,7 +32,7 @@ jobs:
             pushd $directory
             for subdirectory in *; do
                 pushd $subdirectory
-                docker run --privileged --network=host --rm -it -v \"$(pwd)\":/opt build dpkg-buildpackage
+                docker run --privileged --network=host --rm -v \"$(pwd)\":/opt build dpkg-buildpackage
                 popd
             done
             find . -name \*.deb -exec mv {} ../../debian-built/$directory/

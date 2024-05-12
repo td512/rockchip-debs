@@ -31,7 +31,10 @@ jobs:
       - name: Build Packages
         run: |
           ls
+          pwd
           cd debian-packages
+          ls
+          pwd
           for directory in *; do 
             pushd $directory
             for subdirectory in *; do

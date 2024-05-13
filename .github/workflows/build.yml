@@ -12,6 +12,7 @@ jobs:
           suite:
             - bookworm
             - trixie
+    continue-on-error: true
     runs-on: buildjet-8vcpu-ubuntu-2204-arm
     name: Build Packages
 

@@ -36,8 +36,8 @@ jobs:
             for subdirectory in *; do
                 pushd "${subdirectory}"
                 docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-source -x *.dsc
-                cd "$(find . -maxdepth 1 -type d|tail -n 1)"
-                docker run --privileged --network=host --rm -v "$(pwd)":/opt build dpkg-buildpackage
+                BUILDDIR="$(find . -maxdepth 1 -type d|tail -n 1)"
+                docker run --privileged --network=host --rm -v "$(pwd)":/opt build bash -c "cd $BUILDDIR && dpkg-buildpackage"
                 popd
             done
             mkdir -p "../../debian-built/${directory}/${subdirectory}"

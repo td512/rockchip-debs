@@ -12,7 +12,7 @@ jobs:
           suite:
             - bookworm
             - trixie
-    runs-on: runs-on,runner=8cpu-linux-arm64,image=ubuntu22-full-arm64,run-id=${{ github.run_id }}
+    runs-on: buildjet-8vcpu-ubuntu-2204-arm
     name: Build Packages
 
     steps:
